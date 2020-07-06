@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import './App.css';
-import Test from './Test';
 import {
   BrowserRouter as Router,
   Switch,
@@ -29,7 +28,7 @@ class ErrorBoundary extends React.Component {
       // Error path
       return (
         <div>
-          <h2>Something went wrong.</h2>
+          <h2>Something went wrong, but we caught the error!</h2>
           <details style={{ whiteSpace: 'pre-wrap' }}>
             {this.state.error && this.state.error.toString()}
             <br />
@@ -53,10 +52,10 @@ export default function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/about">About (throws error that is caught)</Link>
             </li>
             <li>
-              <Link to="/users">Users</Link>
+              <Link to="/users">Users (throws error that is not caught)</Link>
             </li>
           </ul>
         </nav>
@@ -65,9 +64,9 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            {/* <ErrorBoundary> */}
+            <ErrorBoundary>
             <About />
-            {/* </ErrorBoundary> */}
+            </ErrorBoundary>
             </Route>
           <Route path="/users">
             <Users />
@@ -86,9 +85,9 @@ function Home() {
 }
 
 function About() {
-   throw new Error('About Page err');
+   throw new Error('This is caught');
 }
 
 function Users() {
-  return <h2>Users</h2>;
+  throw new Error('This is not caught');
 }
